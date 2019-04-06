@@ -1,3 +1,7 @@
+# ------------------------------------------------------ #
+# github: https://github.com/haboh/yandex_lyceum_map_api #
+# ------------------------------------------------------ #
+
 import sys
 import requests
 from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QLabel
