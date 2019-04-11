@@ -13,7 +13,7 @@ from toponym import find_toponym_coordinates, find_district_by_coordinates
 
 MAP_URL = 'https://static-maps.yandex.ru/1.x/'
 FILENAME = "map.png"
-LL = 37.620070, 55.753630
+LL = [37.620070, 55.753630]
 
 
 class MapsMainWindow(QMainWindow):
@@ -22,7 +22,7 @@ class MapsMainWindow(QMainWindow):
         self.setWindowTitle('Yandex map')
         self.setGeometry(0, 0, 600, 450)
         self.pixMap = QLabel(self)
-        self.scale = 10
+        self.scale = 3
         self.ll = LL
 
     def update_map(self, t="map"):
@@ -40,12 +40,25 @@ class MapsMainWindow(QMainWindow):
         self.pixMap.resize(pixmap.size())
 
     def keyPressEvent(self, e):
+        delta = 360 / (2 ** self.scale)
+        previous_ll = self.ll
         if e.key() == Qt.Key_PageUp:
             self.scale += 1
         if e.key() == Qt.Key_PageDown:
             self.scale -= 1
+        if e.key() == Qt.Key_Left:
+            self.ll[0] -= delta
+        if e.key() == Qt.Key_Right:
+            self.ll[0] += delta
+        if e.key() == Qt.Key_Up:
+            self.ll[1] += delta
+        if e.key() == Qt.Key_Down:
+            self.ll[1] -= delta
         self.scale = min(max(self.scale, 0), 17)
-        self.update_map()
+        try:
+            self.update_map()
+        except AssertionError:
+            self.ll = previous_ll
 
 
 def main():
