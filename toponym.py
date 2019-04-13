@@ -1,6 +1,10 @@
 import requests
 
 
+class NotFoundError(Exception):
+    pass
+
+
 # ----------------- Toponym search ----------------------------------
 
 
@@ -16,7 +20,10 @@ def find_toponym_coordinates(toponym_to_find):
         raise Exception()
 
     json_response = response.json()
-    toponym = json_response["response"]["GeoObjectCollection"]["featureMember"][0]["GeoObject"]
+    try:
+        toponym = json_response["response"]["GeoObjectCollection"]["featureMember"][0]["GeoObject"]
+    except IndexError:
+        raise NotFoundError()
     toponym_coodrinates = toponym["Point"]["pos"]
     return list(map(float, toponym_coodrinates.split()))
 
