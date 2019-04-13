@@ -43,6 +43,14 @@ class MapsMainWindow(QMainWindow):
         self.typeButton.clicked.connect(self.change_type)
         self.scale = 3
         self.ll = LL
+        self.resetButton = QPushButton(self)
+        self.resetButton.setText('Reset')
+        self.resetButton.move(430, 490)
+        self.resetButton.clicked.connect(self.clear_marked_objects)
+
+    def clear_marked_objects(self):
+        self.marked_objects = []
+        self.update_map()
 
     def search_object(self):
         object_name = self.searchLine.text()
